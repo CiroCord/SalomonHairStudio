@@ -94,7 +94,7 @@ setInterval(() => {
 // --- Iniciar Servidor ---
 app.listen(PORT, () => {
   console.log(`🚀 Servidor corriendo en https://salomonhairstudio.onrender.com`);
-  console.log(`FRONT corriendo en ${import.meta.env.FRONTEND_URL}`);
+  console.log(`FRONT corriendo en ${process.env.FRONTEND_URL}`);
   // Intentamos conectar a la DB después de que el servidor ya esté escuchando
   connectDB();
   startWhatsAppBot();
