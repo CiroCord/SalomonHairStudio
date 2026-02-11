@@ -530,52 +530,58 @@ export const createAppointment = async (req, res) => {
 
         await newAppointment.save();
 
-        // --- INTEGRACIÓN GOOGLE CALENDAR (Escritura) ---
-        // Creamos el evento en Google Calendar
-        const businessEvent = await createGoogleEvent({
-            clientName: (await User.findById(clientId))?.username || 'Cliente Web',
-            serviceName: serviceNames,
-            professionalName: (await Professional.findById(professionalId))?.name || 'Profesional',
-            date: date,
-            startTime: startTime,
-            endTime: endTime
-        });
-
-        if (businessEvent && businessEvent.id) {
-            newAppointment.googleEventId = businessEvent.id;
-        }
-
-        // --- INTEGRACIÓN CALENDARIO PERSONAL DEL CLIENTE ---
-        const clientUser = await User.findById(clientId);
-        if (clientUser && clientUser.googleCalendarTokens) {
-            const clientEventId = await createEventForUser(clientUser.googleCalendarTokens, {
+        // --- INTEGRACIONES EXTERNAS (BLINDADAS) ---
+        // Envolvemos en try-catch para que si Google/Email falla, el turno NO se pierda
+        try {
+            // 1. Google Calendar Negocio
+            const businessEvent = await createGoogleEvent({
+                clientName: (await User.findById(clientId))?.username || 'Cliente Web',
                 serviceName: serviceNames,
                 professionalName: (await Professional.findById(professionalId))?.name || 'Profesional',
                 date: date,
                 startTime: startTime,
                 endTime: endTime
             });
-            if (clientEventId) newAppointment.clientGoogleEventId = clientEventId;
-        }
 
-        // --- INTEGRACIÓN CALENDARIO DEL PROFESIONAL ---
-        const professionalDoc = await Professional.findById(professionalId);
-        if (professionalDoc) {
-            const professionalUser = await User.findOne({ email: professionalDoc.email });
-            if (professionalUser && professionalUser.googleCalendarTokens) {
-                const proEventId = await createEventForUser(professionalUser.googleCalendarTokens, {
+            if (businessEvent && businessEvent.id) {
+                newAppointment.googleEventId = businessEvent.id;
+            }
+
+            // 2. Google Calendar Cliente
+            const clientUser = await User.findById(clientId);
+            if (clientUser && clientUser.googleCalendarTokens) {
+                const clientEventId = await createEventForUser(clientUser.googleCalendarTokens, {
                     serviceName: serviceNames,
-                    professionalName: 'Tú (Salomon Hair Studio)', // Título para el pro
+                    professionalName: (await Professional.findById(professionalId))?.name || 'Profesional',
                     date: date,
                     startTime: startTime,
                     endTime: endTime
                 });
-                if (proEventId) newAppointment.professionalGoogleEventId = proEventId;
+                if (clientEventId) newAppointment.clientGoogleEventId = clientEventId;
             }
-        }
 
-        // Guardamos los IDs de Google en el turno
-        await newAppointment.save();
+            // 3. Google Calendar Profesional
+            const professionalDoc = await Professional.findById(professionalId);
+            if (professionalDoc) {
+                const professionalUser = await User.findOne({ email: professionalDoc.email });
+                if (professionalUser && professionalUser.googleCalendarTokens) {
+                    const proEventId = await createEventForUser(professionalUser.googleCalendarTokens, {
+                        serviceName: serviceNames,
+                        professionalName: 'Tú (Salomon Hair Studio)',
+                        date: date,
+                        startTime: startTime,
+                        endTime: endTime
+                    });
+                    if (proEventId) newAppointment.professionalGoogleEventId = proEventId;
+                }
+            }
+
+            // Guardamos los IDs de Google si se generaron
+            await newAppointment.save();
+
+        } catch (integrationError) {
+            console.error("⚠️ Error en integraciones (Google/Email) pero el turno se guardó:", integrationError.message);
+        }
 
         // --- ENVIAR EMAIL DE CONFIRMACIÓN ---
         try {

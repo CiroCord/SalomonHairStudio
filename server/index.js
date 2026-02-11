@@ -30,16 +30,13 @@ console.log('⏳ Iniciando servidor...'); // Log para confirmar ejecución
 // --- Middlewares ---
 
 // Configuración de CORS
-// Importante: Permitimos peticiones desde el puerto 4321 (Astro por defecto)
-const allowedOrigins = [
-  'http://localhost:4321', 
-  'http://127.0.0.1:4321',
-  (process.env.FRONTEND_URL || '').replace(/\/$/, '') // Elimina barra final si existe para evitar error de CORS
-].filter(Boolean);
-
+// ⚠️ MODO PRESENTACIÓN: Permitimos cualquier origen para evitar bloqueos
 app.use(cors({
-  origin: allowedOrigins,
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  origin: function (origin, callback) {
+    // Permitir todo (reflejar origen)
+    return callback(null, true);
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   credentials: true
 }));
 
