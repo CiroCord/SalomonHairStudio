@@ -45,13 +45,25 @@ const client = new Client({
             '--disable-dev-shm-usage', // Crucial para servidores con memoria limitada (Docker/Render)
             '--disable-accelerated-2d-canvas',
             '--no-first-run',
-            '--disable-gpu'
+            '--disable-gpu',
+            '--single-process', // Reduce el consumo de memoria significativamente
+            '--no-zygote'       // Evita crear procesos hijos innecesarios
         ]
     }
 });
 
-client.on('qr', (qr) => qrcode.generate(qr, { small: true }));
-client.on('ready', () => console.log('🤖 Bot IA de Salomon Hair Studio listo!'));
+let qrShown = false;
+client.on('qr', (qr) => {
+    if (!qrShown) {
+        qrcode.generate(qr, { small: true });
+        console.log('📱 QR generado. Escanéalo ahora (se muestra una sola vez para limpiar logs).');
+        qrShown = true;
+    }
+});
+client.on('ready', () => {
+    console.log('🤖 Bot IA de Salomon Hair Studio listo!');
+    qrShown = false;
+});
 
 // --- DEFINICIÓN DE HERRAMIENTAS PARA LA IA ---
 const tools = [

@@ -98,3 +98,9 @@ app.listen(PORT, () => {
   connectDB();
   startWhatsAppBot();
 });
+
+// Manejo elegante del cierre (evita npm error signal SIGTERM en logs)
+process.on('SIGTERM', () => {
+  console.log('🛑 SIGTERM recibido. Cerrando servidor...');
+  process.exit(0);
+});
