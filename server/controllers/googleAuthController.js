@@ -72,7 +72,7 @@ export const googleAuthCallback = async (req, res) => {
         res.redirect(`${frontendUrl}/mis-turnos?status=linked`);
     } catch (error) {
         console.error('Error en callback de Google:', error);
-        const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:4321';
+        const frontendUrl = process.env.FRONTEND_URL || 'https://salomon-hair-studio.vercel.app';
         res.redirect(`${frontendUrl}/mis-turnos?status=error`);
     }
 };

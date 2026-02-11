@@ -148,47 +148,38 @@ export const BookingWizardContent = () => {
   const handleMonthChange = useCallback(async (year, month) => {
     if (!selectedProfessional || selectedServices.length === 0) return;
     
-    // 1. Cargar eventos de Google del CLIENTE para pintar puntitos
+    setMonthAvailability(null); // Loading visual
+
+    // Preparamos las promesas para ejecutarlas en paralelo
+    const promises = [];
+
+    // 1. Disponibilidad del sistema
+    const availabilityPromise = axios.get(`${BACKEND_URL}/api/appointments/availability-month`, {
+        params: {
+            professionalId: selectedProfessional._id,
+            serviceIds: selectedServices.map(s => s._id).join(','),
+            year, month
+        }
+    });
+    promises.push(availabilityPromise);
+
+    // 2. Eventos de Google (si corresponde)
     if (user && user.isGoogleCalendarLinked) {
-        try {
-            const res = await axios.get(`${BACKEND_URL}/api/appointments/google-events`, {
-                params: { userId: user.id || user._id, year, month }
-            });
-            // Convertir array a mapa { "YYYY-MM-DD": true }
-            const eventsMap = {};
-            res.data.forEach(evt => {
-                // Asumimos que evt.start viene como "HH:mm" o fecha ISO si modificamos el backend
-                // Pero getUserGoogleEvents devuelve objetos simplificados.
-                // Necesitamos la fecha original para mapear.
-                // El backend devuelve start/end formateados. Mejor usar la lógica de fecha del evento original si es posible,
-                // pero para simplificar, asumiremos que el backend devuelve eventos dentro del rango.
-                // NOTA: Para mapear correctamente al día, necesitamos la fecha.
-                // Como getUserGoogleEvents simplificado no devuelve la fecha completa en 'start', 
-                // vamos a confiar en que el backend filtra bien, pero para pintar el puntito necesitamos saber QUÉ día es.
-                // *Corrección*: El backend devuelve 'start' como hora. Necesitamos la fecha completa en la respuesta del backend para esto.
-                // *Solución rápida*: El backend devuelve eventos ordenados.
-                // Vamos a modificar getUserGoogleEvents para devolver la fecha completa en un campo extra o usar startDateTime.
-                // Por ahora, asumiremos que si hay eventos, hay puntitos.
-                // *Mejor*: Modificaré el backend para devolver 'date' en la respuesta simplificada.
-                // (Ver cambio en appointmentController.js abajo si hiciera falta, pero usaremos startDateTime del objeto original si lo pasamos).
-                // Como el backend actual devuelve { summary, start: 'HH:mm', ... }, necesitamos la fecha.
-                // *Ajuste en frontend*: Vamos a asumir que el backend devuelve la fecha en 'start' si es ISO, o agregamos un campo 'date'.
-                // *Hack*: Usaremos el endpoint tal cual está, pero necesitamos la fecha.
-                // *Mejor*: Voy a asumir que el backend devuelve la fecha ISO en un campo 'rawDate' o similar.
-                // (Ver nota: He actualizado el backend para devolver start/end formateados, pero para el calendario necesitamos la fecha).
-                // *Corrección*: Voy a modificar el backend para devolver 'startDate' (ISO).
-            });
-            // REVISIÓN: El backend devuelve start/end formateados.
-            // Vamos a hacer que el backend devuelva también la fecha ISO para poder mapear.
-            // (Ver cambio en appointmentController.js: agregaré 'startDate' al objeto).
-        } catch (err) { console.error(err); }
+        const googlePromise = axios.get(`${BACKEND_URL}/api/appointments/google-events`, {
+            params: { userId: user.id || user._id, year, month }
+        });
+        promises.push(googlePromise);
     }
 
-    // Cargar eventos del cliente (versión corregida con fetch real)
-    if (user && user.isGoogleCalendarLinked) {
-        axios.get(`${BACKEND_URL}/api/appointments/google-events`, {
-            params: { userId: user.id || user._id, year, month }
-        }).then(res => {
+    try {
+        const results = await Promise.all(promises);
+        
+        // Resultado 1: Disponibilidad
+        setMonthAvailability(results[0].data);
+
+        // Resultado 2: Google Events (si existe)
+        if (user && user.isGoogleCalendarLinked && results[1]) {
+            const res = results[1];
             const map = {};
             res.data.forEach(e => {
                 if (e.startDate) {
@@ -212,20 +203,11 @@ export const BookingWizardContent = () => {
                 }
             });
             setClientEventsMonth(map);
-        }).catch(console.error);
+        }
+    } catch (err) { 
+        console.error("Error cargando calendario:", err);
+        setMonthAvailability({}); // Evitar bloqueo infinito
     }
-    
-    setMonthAvailability(null); // Resetear a loading para evitar bugs visuales
-    try {
-        const res = await axios.get(`${BACKEND_URL}/api/appointments/availability-month`, {
-            params: {
-                professionalId: selectedProfessional._id,
-                serviceIds: selectedServices.map(s => s._id).join(','),
-                year, month
-            }
-        });
-        setMonthAvailability(res.data);
-    } catch (err) { console.error(err); }
   }, [selectedProfessional, selectedServices]);
 
   // Renderizado personalizado de celda para BookingCalendar
@@ -254,22 +236,27 @@ export const BookingWizardContent = () => {
     const dateString = `${year}-${month}-${day}`;
 
     try {
-        // Consultar disponibilidad al backend
-        const res = await axios.get(`${BACKEND_URL}/api/appointments/availability`, {
+        // Ejecutar en paralelo para velocidad
+        const promises = [
+            axios.get(`${BACKEND_URL}/api/appointments/availability`, {
             params: {
                 professionalId: selectedProfessional._id,
                 serviceIds: selectedServices.map(s => s._id).join(','),
                 date: dateString
             }
-        });
-        setAvailableSlots(res.data.availableSlots);
+            })
+        ];
 
-        // Si el usuario está logueado y vinculado, buscar sus eventos
         if (user && user.isGoogleCalendarLinked) {
-            const eventsRes = await axios.get(`${BACKEND_URL}/api/appointments/google-events`, {
+            promises.push(axios.get(`${BACKEND_URL}/api/appointments/google-events`, {
                 params: { userId: user.id || user._id, date: dateString }
-            });
-            setUserGoogleEvents(eventsRes.data);
+            }));
+        }
+
+        const results = await Promise.all(promises);
+        setAvailableSlots(results[0].data.availableSlots);
+        if (results[1]) {
+            setUserGoogleEvents(results[1].data);
         }
 
     } catch (err) {

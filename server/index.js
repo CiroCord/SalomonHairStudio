@@ -97,7 +97,10 @@ app.listen(PORT, () => {
   console.log(`FRONT corriendo en ${process.env.FRONTEND_URL}`);
   // Intentamos conectar a la DB después de que el servidor ya esté escuchando
   connectDB();
-  startWhatsAppBot();
+  
+  // ⚠️ COMENTADO PARA MEJORAR VELOCIDAD EN RENDER FREE TIER
+  // El bot de WhatsApp consume mucha RAM y hace que el servidor se cuelgue al reservar.
+  // startWhatsAppBot(); 
 });
 
 // Manejo elegante del cierre (evita npm error signal SIGTERM en logs)
