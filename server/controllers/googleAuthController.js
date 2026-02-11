@@ -67,7 +67,8 @@ export const googleAuthCallback = async (req, res) => {
         }
 
         // Redirigir al frontend con éxito (Usamos puerto 4321 que es el de Astro por defecto)
-        const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:4321';
+        // IMPORTANTE: Configurar FRONTEND_URL en Render apuntando a Vercel
+        const frontendUrl = process.env.FRONTEND_URL || 'https://salomon-hair-studio.vercel.app'; 
         res.redirect(`${frontendUrl}/mis-turnos?status=linked`);
     } catch (error) {
         console.error('Error en callback de Google:', error);
@@ -102,7 +103,7 @@ export const googleLogin = (req, res) => {
 // 5. Callback Login: Crea/Busca usuario y devuelve JWT
 export const googleLoginCallback = async (req, res) => {
     const { code } = req.query;
-    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:4321';
+    const frontendUrl = process.env.FRONTEND_URL || 'https://salomon-hair-studio.vercel.app';
 
     try {
         // Obtener datos del usuario desde Google
