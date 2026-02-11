@@ -32,8 +32,8 @@ const oauth2Client = new google.auth.OAuth2(
 );
 
 // URL de redirección específica para LOGIN (debe coincidir con la consola de Google)
-const BACKEND_URL = (process.env.BACKEND_URL || 'http://localhost:5000').replace(/\/$/, '');
-const LOGIN_REDIRECT_URI = `${BACKEND_URL}/api/auth/google/login/callback`;
+const BACKEND_URL = (process.env.BACKEND_URL || 'https://salomonhairstudio.onrender.com').replace(/\/$/, '');
+const LOGIN_REDIRECT_URI = `https://salomonhairstudio.onrender.com/api/auth/google/login/callback`;
 
 console.log(`🔐 Login Redirect URI configurada: ${LOGIN_REDIRECT_URI}`);
 
