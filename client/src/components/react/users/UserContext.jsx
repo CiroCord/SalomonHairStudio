@@ -106,4 +106,18 @@ export const UserProvider = ({ children }) => {
     );
 };
 
-export const useUser = () => useContext(UserContext);
+export const useUser = () => {
+    const context = useContext(UserContext);
+    if (!context) {
+        // Retornar un objeto seguro para evitar que la app explote si falta el Provider
+        return { 
+            user: null, 
+            loading: true, 
+            isSpectator: false, 
+            refreshUser: () => {}, 
+            theme: 'dark', 
+            toggleTheme: () => {} 
+        };
+    }
+    return context;
+};
