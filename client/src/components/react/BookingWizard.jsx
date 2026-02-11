@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import BookingCalendar from './BookingCalendar';
-import { UserProvider, useUser } from './users/UserContext';
-import { BrowserRouter } from 'react-router-dom';
+import { useUser } from './users/UserContext';
 import CustomAlert from './ui/CustomAlert';
 
 // URL del backend (ajustar si usas variables de entorno)
@@ -685,13 +684,4 @@ const BookingWizardContent = () => {
   );
 };
 
-// Wrapper para proveer Contexto y Router
-const BookingWizard = () => (
-    <BrowserRouter>
-        <UserProvider>
-            <BookingWizardContent />
-        </UserProvider>
-    </BrowserRouter>
-);
-
-export default BookingWizard;
+export default BookingWizardContent;

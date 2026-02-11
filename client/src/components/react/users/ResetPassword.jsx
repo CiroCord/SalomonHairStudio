@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import axios from 'axios';
+import { useParams } from 'react-router-dom';
 
 const BACKEND_URL = (import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000').replace(/\/$/, '');
 
-const ResetPassword = ({ id, token }) => {
+const ResetPassword = () => {
+  const { id, token } = useParams();
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
