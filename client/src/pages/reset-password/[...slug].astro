@@ -1,0 +1,17 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ResetPassword from '../../components/react/users/ResetPassword.jsx';
+
+// Capturamos todo lo que viene después de /reset-password/
+const { slug } = Astro.params;
+
+// Dividimos manualmente: el primer segmento es el ID, el resto es el Token
+const [id, ...tokenParts] = slug ? slug.split('/') : [null];
+const token = tokenParts.join('/'); // Reconstruimos el token por si tenía barras (raro en JWT pero posible)
+
+if (!id || !token) return Astro.redirect('/login');
+---
+
+<Layout title="Restablecer Contraseña - Salomon Hair Studio">
+    <ResetPassword id={id} token={token} client:only="react" />
+</Layout>

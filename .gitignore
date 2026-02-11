@@ -1,0 +1,20 @@
+# Dependencias de Node (aplica a client y server)
+node_modules/
+.wwebjs_auth/
+.wwebjs_cache/
+
+# Archivos de entorno (claves secretas)
+.env
+.env.local
+# Archivos de sistema operativo
+.DS_Store
+Thumbs.db
+
+# Builds de producción
+dist/
+build/
+.vercel/
+
+# Credenciales de Google y secretos
+credentials.json
+server/credentials.json

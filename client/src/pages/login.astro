@@ -1,0 +1,10 @@
+---
+import Layout from '../layouts/Layout.astro';
+import AuthPage from '../components/react/users/AuthPage.jsx';
+---
+
+<Layout title="Iniciar Sesión - Salomon Hair Studio">
+    <div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <AuthPage client:only="react" />
+    </div>
+</Layout>

@@ -1,0 +1,192 @@
+---
+import Layout from '../layouts/Layout.astro';
+import HomeGallery from '../components/react/HomeGallery.jsx';
+import ServiceShowcase from '../components/react/ServiceShowcase.jsx';
+---
+
+<style>
+    /* Efecto de revelado al hacer scroll */
+    .reveal-on-scroll {
+        opacity: 0;
+        transform: translateY(50px);
+        transition: all 1.2s cubic-bezier(0.2, 1, 0.2, 1); /* Easing suave y elegante */
+    }
+    
+    .reveal-on-scroll.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* Retrasos escalonados para elementos hijos si se desea */
+    .delay-100 { transition-delay: 100ms; }
+    .delay-200 { transition-delay: 200ms; }
+    .delay-300 { transition-delay: 300ms; }
+</style>
+
+<Layout title="Salomon Hair Studio - Inicio">
+    <!-- HERO SECTION: Impacto Visual Inmediato -->
+    <section class="relative h-[calc(100vh-64px)] min-h-[600px] flex items-center justify-center text-center text-white overflow-hidden">
+      <!-- Fondo con efecto Parallax sutil -->
+      <!-- Overlay mejorado: Gradiente para asegurar legibilidad del texto sin oscurecer demasiado la foto -->
+      <div class="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-black/80 z-10"></div>
+      
+      <div id="hero-bg" class="absolute inset-0 bg-[url('https://www.bellezacampolongo.com/images/profesionales-en-peluqueria-unisex-en-pontevedra.jpg')] bg-cover bg-center scale-105 animate-slow-zoom"></div>
+      
+      <div class="relative z-20 max-w-3xl px-4 animate-fade-in">
+        <div class="mb-6 inline-block">
+            <span class="py-1 px-3 border border-yellow-500/50 rounded-full text-yellow-500 text-xs font-bold tracking-[0.2em] uppercase bg-black/30 backdrop-blur-sm">
+                Desde 2017
+            </span>
+        </div>
+        <h1 class="text-6xl md:text-8xl font-serif font-bold mb-6 text-white tracking-tight leading-none">
+          SALOMON <span class="text-yellow-500">STUDIO</span>
+        </h1>
+        <p class="text-lg md:text-2xl font-light tracking-[0.2em] uppercase mb-10 text-gray-300">
+          La Excelencia en Cada Detalle
+        </p>
+        
+        <div class="flex flex-col md:flex-row gap-4 justify-center items-center">
+            <a href="/turnos" class="group relative px-8 py-4 bg-yellow-600 text-zinc-900 font-bold text-sm uppercase tracking-widest overflow-hidden rounded-sm transition-all hover:bg-yellow-500 no-underline min-w-[200px]">
+                <span class="relative z-10">Reservar Cita</span>
+            </a>
+            <a href="/gallery" class="group px-8 py-4 border border-white/30 text-white font-bold text-sm uppercase tracking-widest hover:bg-white hover:text-zinc-900 transition-all rounded-sm no-underline min-w-[200px]">
+                Ver Galería
+            </a>
+        </div>
+      </div>
+
+      <!-- Scroll Indicator -->
+      <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 z-20 animate-bounce">
+        <svg class="w-6 h-6 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+      </div>
+    </section>
+
+    <!-- SECCIÓN DE FILOSOFÍA: Calidad y Prestigio -->
+    <section class="py-24 bg-zinc-900 text-white relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-yellow-600/10 to-transparent pointer-events-none"></div>
+        
+        <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-16 items-center relative z-10">
+            <div class="order-2 md:order-1">
+                <div class="relative group">
+                    <div class="absolute -top-4 -left-4 w-24 h-24 border-t-2 border-l-2 border-yellow-500/50 transition-all duration-500 group-hover:-top-6 group-hover:-left-6"></div>
+                    <img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?q=80&w=1000&auto=format&fit=crop" alt="Interior Salon" class="w-full h-[500px] object-cover grayscale hover:grayscale-0 transition-all duration-700 shadow-2xl rounded-sm" />
+                    <div class="absolute -bottom-4 -right-4 w-24 h-24 border-b-2 border-r-2 border-yellow-500/50 transition-all duration-500 group-hover:-bottom-6 group-hover:-right-6"></div>
+                </div>
+            </div>
+            <div class="order-1 md:order-2">
+                <h2 class="text-yellow-500 text-sm font-bold tracking-[0.3em] uppercase mb-4">Nuestra Filosofía</h2>
+                <h3 class="text-4xl md:text-5xl font-serif font-bold mb-8 leading-tight">Más que un corte,<br/>una declaración.</h3>
+                <p class="text-gray-400 text-lg leading-relaxed mb-6">
+                    En Salomon Studio, entendemos que tu imagen es tu carta de presentación al mundo. No solo cortamos cabello; esculpimos confianza.
+                </p>
+                <p class="text-gray-400 text-lg leading-relaxed mb-10">
+                    Cada servicio es un ritual diseñado para desconectar del ruido exterior y reconectar con tu mejor versión. Utilizamos productos de la más alta gama internacional porque tu cabello no merece menos.
+                </p>
+                <div class="flex gap-8">
+                    <div>
+                        <span class="block text-3xl font-serif text-white font-bold">500+</span>
+                        <span class="text-xs text-yellow-500 uppercase tracking-wider">Clientes Felices</span>
+                    </div>
+                    <div>
+                        <span class="block text-3xl font-serif text-white font-bold">10+</span>
+                        <span class="text-xs text-yellow-500 uppercase tracking-wider">Años de Experiencia</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN DE SERVICIOS DESTACADOS (Video Hover) -->
+    <section class="py-24 bg-zinc-50 reveal-on-scroll">
+      <div class="text-center mb-20">
+        <span class="text-yellow-600 text-xs font-bold tracking-[0.3em] uppercase block mb-3">Experiencias</span>
+        <h2 class="text-4xl md:text-5xl font-serif font-bold text-zinc-900">Servicios de Autor</h2>
+      </div>
+
+      <ServiceShowcase client:visible />
+      
+      <div class="text-center mt-16">
+          <a href="/turnos" class="inline-block border-b-2 border-zinc-900 text-zinc-900 font-bold uppercase tracking-widest pb-1 hover:text-yellow-600 hover:border-yellow-600 transition-colors text-sm no-underline">
+              Ver Menú Completo
+          </a>
+      </div>
+    </section>
+
+    <!-- SECCIÓN DE CAPACITACIONES -->
+    <section class="relative h-[50vh] min-h-[400px] flex items-center justify-center overflow-hidden reveal-on-scroll group">
+        <!-- Imagen de fondo con efecto zoom suave al hover -->
+        <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1585747860715-2ba37e788b70?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center transition-transform duration-1000 group-hover:scale-105 grayscale"></div>
+        <div class="absolute inset-0 bg-black/50 group-hover:bg-black/40 transition-colors duration-500"></div>
+        
+        <div class="relative z-10 text-center px-4">
+            <h2 class="text-5xl md:text-7xl font-serif font-bold text-white mb-8 tracking-tight">CAPACITACIONES</h2>
+            <a href="/awards" class="inline-block px-10 py-4 border border-white text-white font-bold text-sm uppercase tracking-[0.2em] hover:bg-white hover:text-zinc-900 transition-all duration-300 no-underline">
+                Ver Cursos
+            </a>
+        </div>
+    </section>
+
+    <!-- GALERÍA SOCIAL -->
+    <section class="py-24 bg-zinc-900 border-t border-zinc-800 reveal-on-scroll">
+        <div class="container mx-auto px-4 mb-12 flex justify-between items-end">
+            <div>
+                <h2 class="text-3xl font-serif font-bold text-white">Salomon Gallery</h2>
+                <p class="text-gray-500 mt-2">Inspiración real de nuestros clientes.</p>
+            </div>
+            <a href="/gallery" class="hidden md:block text-yellow-500 hover:text-white transition-colors text-sm font-bold uppercase tracking-wider no-underline">Ver Todo →</a>
+        </div>
+        <div class="container mx-auto px-4">
+            <HomeGallery client:visible />
+        </div>
+        <div class="text-center mt-10 md:hidden">
+            <a href="/gallery" class="text-yellow-500 hover:text-white transition-colors text-sm font-bold uppercase tracking-wider no-underline">Ver Todo →</a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-zinc-900 text-gray-400 py-12 border-t border-zinc-800">
+      <div class="container mx-auto px-4 text-center">
+        <div class="mb-6">
+          <span class="text-2xl font-serif font-bold text-yellow-500">SALOMON</span>
+        </div>
+        <p class="mb-4">Monroe 2248, Belgrano, CABA</p>
+        <p class="text-sm opacity-50">&copy; {new Date().getFullYear()} Salomon Hair Studio. Todos los derechos reservados.</p>
+      </div>
+      
+      {/* Espaciador para la barra de navegación móvil */}
+      <div class="h-20 md:hidden"></div>
+    </footer>
+
+    <script>
+        // Script para manejar la animación al scrollear
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.15 // Se activa cuando el 15% del elemento es visible
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target); // Solo animar una vez
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal-on-scroll').forEach((element) => {
+            observer.observe(element);
+        });
+
+        // Efecto Blur progresivo en el Hero al hacer scroll
+        const heroBg = document.getElementById('hero-bg');
+        
+        window.addEventListener('scroll', () => {
+            if (!heroBg) return;
+            const scrollY = window.scrollY;
+            // Calcula el blur: aumenta 1px cada 40px de scroll, hasta un máximo de 15px
+            const blurValue = Math.min(scrollY / 40, 15);
+            heroBg.style.filter = `blur(${blurValue}px)`;
+        });
+    </script>
+</Layout>

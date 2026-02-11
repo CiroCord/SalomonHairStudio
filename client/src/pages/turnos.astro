@@ -1,0 +1,11 @@
+---
+import Layout from '../layouts/Layout.astro';
+import BookingWizard from '../components/react/BookingWizard.jsx';
+---
+
+<Layout title="Reserva tu Turno - Salomon Hair Studio">
+    <div class="container mx-auto py-12 px-4 pb-24 md:pb-12">
+        <h1 class="text-3xl font-serif font-bold text-center mb-6 tracking-tight">Reserva tu Turno</h1>
+        <BookingWizard client:only="react" />
+    </div>
+</Layout>

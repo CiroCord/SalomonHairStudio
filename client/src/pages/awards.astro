@@ -1,0 +1,14 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Awards3D from '../components/react/Awards3D';
+---
+
+<Layout title="Capacitaciones | Salomon Hair Studio">
+	<main class="bg-zinc-900">
+		<!-- Sección 3D de Capacitaciones -->
+		<!-- client:only="react" es importante porque usa hooks de ventana y scroll que no existen en el servidor -->
+		<div class="relative z-0">
+			<Awards3D client:only="react" />
+		</div>
+	</main>
+</Layout>
