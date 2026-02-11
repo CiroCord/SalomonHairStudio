@@ -1,6 +1,5 @@
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
-import { UserProvider } from './users/UserContext';
 
 // --- DATOS DE LA HISTORIA ---
 const awards = [
@@ -152,7 +151,7 @@ const HorizontalSection = ({ item }) => {
     );
 };
 
-const AwardsContent = () => {
+const Awards3D = () => {
     const targetRef = useRef(null);
     const { scrollYProgress } = useScroll({
         target: targetRef,
@@ -236,11 +235,5 @@ const AwardsContent = () => {
         </div>
     );
 };
-
-const Awards3D = () => (
-    <UserProvider>
-        <AwardsContent />
-    </UserProvider>
-);
 
 export default Awards3D;

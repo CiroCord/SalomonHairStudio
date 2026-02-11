@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import { UserProvider, useUser } from './users/UserContext';
+import { useUser } from './users/UserContext';
 import CustomAlert from './ui/CustomAlert';
 
-const BACKEND_URL = (import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000').replace(/\/$/, '');
+// Usamos la URL de Render como fallback directo si falla la variable de entorno
+const BACKEND_URL = (import.meta.env.VITE_BACKEND_URL || 'https://salomonhairstudio.onrender.com').replace(/\/$/, '');
 
 const GalleryItem = ({ item }) => {
     const videoRef = useRef(null);
@@ -85,7 +86,7 @@ const GalleryItem = ({ item }) => {
     );
 };
 
-const HomeGalleryContent = () => {
+const HomeGallery = () => {
     const [items, setItems] = useState([]);
     const [loading, setLoading] = useState(true);
     const { user, theme } = useUser();
@@ -288,11 +289,5 @@ const HomeGalleryContent = () => {
         </div>
     );
 };
-
-const HomeGallery = () => (
-    <UserProvider>
-        <HomeGalleryContent />
-    </UserProvider>
-);
 
 export default HomeGallery;

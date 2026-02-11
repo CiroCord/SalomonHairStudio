@@ -10,6 +10,8 @@ import ResetPassword from './users/ResetPassword';
 import ForgotPassword from './users/ForgotPassword';
 import EditProfile from './users/EditProfile';
 import HomeGallery from './HomeGallery';
+import MyAppointments from './MyAppointments';
+import Awards3D from './Awards3D';
 import AdminPanel from './admin/AdminPanel'; // Asumiendo ruta
 
 const App = () => {
@@ -25,6 +27,8 @@ const App = () => {
                     <Route path="/reset-password/:id/:token" element={<ResetPassword />} />
                     <Route path="/profile" element={<EditProfile />} />
                     <Route path="/gallery" element={<HomeGallery />} />
+                    <Route path="/mis-turnos" element={<MyAppointments />} />
+                    <Route path="/awards" element={<Awards3D />} />
                     <Route path="/admin" element={<AdminPanel />} />
                 </Routes>
             </UserProvider>

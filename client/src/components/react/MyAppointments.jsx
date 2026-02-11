@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import axios from 'axios';
-import { UserProvider, useUser } from './users/UserContext';
+import { useUser } from './users/UserContext';
 import BookingCalendar from './BookingCalendar';
 import CustomAlert from './ui/CustomAlert';
 
-const BACKEND_URL = (import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000').replace(/\/$/, '');
+const BACKEND_URL = (import.meta.env.VITE_BACKEND_URL || 'https://salomonhairstudio.onrender.com').replace(/\/$/, '');
 
 // Función auxiliar para calcular edad (movida fuera para reutilizar)
 const calculateAge = (dob) => {
@@ -137,7 +137,7 @@ const AppointmentCard = ({ appointment, isProfessional, onCancel, onReschedule, 
     );
 };
 
-const MyAppointmentsContent = () => {
+const MyAppointments = () => {
     const { user, loading: userLoading, theme } = useUser();
     const [appointments, setAppointments] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -1116,11 +1116,5 @@ const MyAppointmentsContent = () => {
         </div>
     );
 };
-
-const MyAppointments = () => (
-    <UserProvider>
-        <MyAppointmentsContent />
-    </UserProvider>
-);
 
 export default MyAppointments;
