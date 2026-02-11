@@ -4,7 +4,7 @@ import { UserProvider, useUser } from '../users/UserContext';
 import CustomAlert from '../ui/CustomAlert';
 import MyAppointments from '../MyAppointments';
 
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
+const BACKEND_URL = import.meta.env.PUBLIC_BACKEND_URL || 'https://salomon-hair-studio.vercel.app';
 
 const AdminPanelContent = () => {
     const [activeTab, setActiveTab] = useState('dashboard');

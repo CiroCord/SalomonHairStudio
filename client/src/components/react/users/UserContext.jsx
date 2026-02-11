@@ -49,6 +49,13 @@ export const UserProvider = ({ children }) => {
                 }
             } catch (error) {
                 console.error("Error cargando contexto de usuario:", error);
+                // Si el usuario no existe en DB (404) o el token es inválido (401), cerramos sesión localmente
+                if (error.response && (error.response.status === 404 || error.response.status === 401)) {
+                    console.warn("Usuario inválido o sesión expirada. Cerrando sesión...");
+                    localStorage.removeItem('user');
+                    localStorage.removeItem('token');
+                    setUser(null);
+                }
             }
         }
         setLoading(false);

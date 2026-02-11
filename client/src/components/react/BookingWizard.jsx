@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import BookingCalendar from './BookingCalendar';
 import { useUser } from './users/UserContext';
 import CustomAlert from './ui/CustomAlert';
@@ -9,6 +10,7 @@ const BACKEND_URL = (import.meta.env.PUBLIC_BACKEND_URL || 'https://salomonhairs
 
 // Componente interno con la lógica
 const BookingWizardContent = () => {
+  const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [services, setServices] = useState([]);
   const [businessConfig, setBusinessConfig] = useState({});
@@ -41,7 +43,7 @@ const BookingWizardContent = () => {
   };
 
   // Auth y Usuario
-  const { user, theme } = useUser();
+  const { user, theme, loading: userLoading } = useUser();
 
   // Cargar servicios al montar el componente
   useEffect(() => {
@@ -278,16 +280,21 @@ const BookingWizardContent = () => {
   };
 
   const handleSlotSelect = async (slot) => {
+      // Si todavía está cargando el usuario, esperamos
+      if (userLoading) return;
+
       // Verificar si el usuario está logueado
       if (!user) {
-          // Redirigir al login si no hay usuario
-          window.location.href = '/login';
+          // Usar navigate para ir al login sin recargar y volver después
+          showAlert("Iniciar Sesión", "Necesitas iniciar sesión para reservar un turno.", "info", () => {
+              navigate('/login', { state: { from: '/turnos' } });
+          });
           return;
       }
 
       // Verificar datos obligatorios (Teléfono y Fecha de Nacimiento)
       if (!user.telefono || !user.fechaNacimiento) {
-          showAlert("Datos Incompletos", "Para confirmar la reserva, necesitamos que completes tu Teléfono y Fecha de Nacimiento en tu perfil.", "warning", () => window.location.href = '/profile');
+          showAlert("Datos Incompletos", "Para confirmar la reserva, necesitamos que completes tu Teléfono y Fecha de Nacimiento en tu perfil.", "warning", () => navigate('/profile'));
           return;
       }
 

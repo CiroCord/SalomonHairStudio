@@ -152,7 +152,12 @@ const Auth = ({ onSuccess }) => {
         if (onSuccess) {
           setTimeout(() => onSuccess(result.user), 1000);
         } else {
-          setTimeout(() => window.location.href = "/", 1500);
+          // Si venimos de una redirección (ej: intentar reservar sin login), volvemos ahí
+          const from = location.state?.from || "/";
+          setTimeout(() => {
+              // Usamos window.location para asegurar recarga completa del estado
+              window.location.href = from;
+          }, 1500);
         }
       } else {
         throw new Error("Respuesta del servidor inválida.");
