@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useUser } from "./UserContext";
 import axios from 'axios';
 
-const BACKEND_URL = (import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000').replace(/\/$/, '');
+const BACKEND_URL = (import.meta.env.VITE_BACKEND_URL || 'https://salomonhairstudio.onrender.com').replace(/\/$/, '');
 
 const Auth = ({ onSuccess }) => {
   const [formData, setFormData] = useState({

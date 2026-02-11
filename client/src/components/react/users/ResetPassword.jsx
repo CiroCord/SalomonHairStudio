@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 
-const BACKEND_URL = (import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000').replace(/\/$/, '');
+const BACKEND_URL = (import.meta.env.VITE_BACKEND_URL || 'https://salomonhairstudio.onrender.com').replace(/\/$/, '');
 
 const ResetPassword = () => {
   const { id, token } = useParams();
