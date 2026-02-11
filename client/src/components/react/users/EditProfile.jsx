@@ -5,7 +5,7 @@ import { useUser } from "./UserContext";
 import CustomAlert from '../ui/CustomAlert';
 
 // Configuración de URL dinámica
-const BACKEND_URL = (import.meta.env.VITE_BACKEND_URL || 'https://salomonhairstudio.onrender.com').replace(/\/$/, '');
+const BACKEND_URL = (import.meta.env.PUBLIC_BACKEND_URL || 'https://salomonhairstudio.onrender.com').replace(/\/$/, '');
 
 export default function EditProfile() {
     const navigate = useNavigate();

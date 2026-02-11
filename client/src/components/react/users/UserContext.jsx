@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const UserContext = createContext();
 
-const BACKEND_URL = (import.meta.env.VITE_BACKEND_URL || 'https://salomonhairstudio.onrender.com').replace(/\/$/, '');
+const BACKEND_URL = (import.meta.env.PUBLIC_BACKEND_URL || 'https://salomonhairstudio.onrender.com').replace(/\/$/, '');
 
 export const UserProvider = ({ children }) => {
     // Inicializamos el estado leyendo directamente de localStorage para evitar retrasos

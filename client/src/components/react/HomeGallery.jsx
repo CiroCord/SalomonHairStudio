@@ -4,7 +4,7 @@ import { useUser } from './users/UserContext';
 import CustomAlert from './ui/CustomAlert';
 
 // Usamos la URL de Render como fallback directo si falla la variable de entorno
-const BACKEND_URL = (import.meta.env.VITE_BACKEND_URL || 'https://salomonhairstudio.onrender.com').replace(/\/$/, '');
+const BACKEND_URL = (import.meta.env.PUBLIC_BACKEND_URL || 'https://salomonhairstudio.onrender.com').replace(/\/$/, '');
 
 const GalleryItem = ({ item }) => {
     const videoRef = useRef(null);

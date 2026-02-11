@@ -5,7 +5,7 @@ import { useUser } from './users/UserContext';
 import CustomAlert from './ui/CustomAlert';
 
 // URL del backend (ajustar si usas variables de entorno)
-const BACKEND_URL = (import.meta.env.VITE_BACKEND_URL || 'https://salomonhairstudio.onrender.com').replace(/\/$/, '');
+const BACKEND_URL = (import.meta.env.PUBLIC_BACKEND_URL || 'https://salomonhairstudio.onrender.com').replace(/\/$/, '');
 
 // Componente interno con la lógica
 const BookingWizardContent = () => {
