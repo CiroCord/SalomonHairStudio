@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, BrowserRouter } from 'react-router-dom';
 import BookingCalendar from './BookingCalendar';
-import { useUser } from './users/UserContext';
+import { useUser, UserProvider } from './users/UserContext';
 import CustomAlert from './ui/CustomAlert';
 
 // URL del backend (ajustar si usas variables de entorno)
 const BACKEND_URL = (import.meta.env.PUBLIC_BACKEND_URL || 'https://salomonhairstudio.onrender.com').replace(/\/$/, '');
 
 // Componente interno con la lógica
-const BookingWizardContent = () => {
+export const BookingWizardContent = () => {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [services, setServices] = useState([]);
@@ -691,4 +691,13 @@ const BookingWizardContent = () => {
   );
 };
 
-export default BookingWizardContent;
+// Wrapper por defecto: Incluye Router y Provider para funcionar de forma aislada (ej: turnos.astro)
+const BookingWizard = () => (
+    <BrowserRouter>
+        <UserProvider>
+            <BookingWizardContent />
+        </UserProvider>
+    </BrowserRouter>
+);
+
+export default BookingWizard;

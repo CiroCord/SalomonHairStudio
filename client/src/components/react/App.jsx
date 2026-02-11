@@ -4,7 +4,7 @@ import { UserProvider } from './users/UserContext';
 
 // Importar páginas
 import Home from './Home';
-import BookingWizard from './BookingWizard';
+import { BookingWizardContent as BookingWizard } from './BookingWizard';
 import Auth from './users/Auth';
 import ResetPassword from './users/ResetPassword';
 import ForgotPassword from './users/ForgotPassword';
