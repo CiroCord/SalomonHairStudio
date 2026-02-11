@@ -4,7 +4,7 @@ import { UserProvider, useUser } from './users/UserContext';
 import BookingCalendar from './BookingCalendar';
 import CustomAlert from './ui/CustomAlert';
 
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
+const BACKEND_URL = (import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000').replace(/\/$/, '');
 
 // Función auxiliar para calcular edad (movida fuera para reutilizar)
 const calculateAge = (dob) => {

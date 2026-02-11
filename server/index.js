@@ -34,7 +34,7 @@ console.log('⏳ Iniciando servidor...'); // Log para confirmar ejecución
 const allowedOrigins = [
   'http://localhost:4321', 
   'http://127.0.0.1:4321',
-  process.env.FRONTEND_URL // Agrega tu dominio de producción aquí mediante variables de entorno
+  (process.env.FRONTEND_URL || '').replace(/\/$/, '') // Elimina barra final si existe para evitar error de CORS
 ].filter(Boolean);
 
 app.use(cors({

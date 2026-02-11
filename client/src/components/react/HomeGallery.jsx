@@ -3,7 +3,7 @@ import axios from 'axios';
 import { UserProvider, useUser } from './users/UserContext';
 import CustomAlert from './ui/CustomAlert';
 
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
+const BACKEND_URL = (import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000').replace(/\/$/, '');
 
 const GalleryItem = ({ item }) => {
     const videoRef = useRef(null);

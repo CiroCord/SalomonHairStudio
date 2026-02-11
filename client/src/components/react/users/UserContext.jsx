@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const UserContext = createContext();
 
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
+const BACKEND_URL = (import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000').replace(/\/$/, '');
 
 export const UserProvider = ({ children }) => {
     // Inicializamos el estado leyendo directamente de localStorage para evitar retrasos
